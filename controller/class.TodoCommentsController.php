@@ -1,6 +1,6 @@
 <?php
 
-class TodoController {
+class TodoCommentsController {
 	private $twig;
 	private $get;
 	private $post;
@@ -12,35 +12,27 @@ class TodoController {
 	}
 
 	public function indexAction() {
-		// Get all todos
+		// Get selected todos
 		$todo = new todo;
-		$todos = $todo->GetList();
-		// Filter by passing an argument as array(array('done', '=', '0')) to
-		// GetList. This would for example only select todos that are done.
+        $todo = $todo->Get($this->get['id']);
+        
+        $todoComments = new todoComments;
+        $todoComments= $todoComments->GetByTodoId($this->get['id']);
 
 		// Get template
-		$template = $this->getTemplate('todo_index');
+		$template = $this->getTemplate('todo_comments_index');
 
 		// Render template
-		return $template->render(array('todos' => $todos));
-	}
-
-	public function markAsDoneAction() {
-		$todo = new todo;
-		$todo = $todo->Get($this->get['id']);
-		$todo->done = 1;
-		$todo->Save();
-
-		return $this->indexAction();
+		return $template->render(array('todo' => $todo,'todoComments'=>$todoComments));
 	}
 
 	/* TODO: add methods for newAction, deleteAction, modifyAction ... */
 
 	//Add new ToDo
-	public function addNewToDoAction() {
-		$todo = new todo();
+	public function addNewCommentAction() {
+		$todoComments = new todoComments();
 		
-		$todo->SaveNew($_POST['name']);
+		$todoComments->SaveNew($_POST['comment'],$this->get['id']);
 		return $this->indexAction();
 	}
 
@@ -51,7 +43,7 @@ class TodoController {
 		$todo->done = 1;
 		$todo->Delete();
 
-		return $this->indexAction();$todo = new todo();
+		return $this->indexAction();
 		
 	}
 

@@ -5,8 +5,11 @@ require 'vendor/autoload.php';
 require_once 'configuration.php';
 
 require_once 'controller/class.TodoController.php';
+require_once 'controller/class.TodoCommentsController.php';
 require_once 'db/objects/class.database.php';
 require_once 'db/objects/class.todo.php';
+require_once 'db/objects/class.todoComments.php';
+
 
 // Load Twig
 $loader = new Twig_Loader_Filesystem('view/');
@@ -21,6 +24,9 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 switch ($controllerName) {
 	case 'todo':
 		$controller = new TodoController($twig, $_GET, $_POST);
+		break;
+		case 'todocomments':
+		$controller = new TodoCommentsController($twig, $_GET, $_POST);
 		break;
 	default:
 		throw new Exception("Unknown controller: $controllerName");

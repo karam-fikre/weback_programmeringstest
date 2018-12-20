@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head> 
+{% block stylesheets %}
+
+    <link href="./view/css/main.css" rel="stylesheet">
+{% endblock %}
+
+</head>
+
+<body>
+
+<ul id="todo-list">
+<h1>  {{ todo.name }}</h1>
+{% for todoComment in todoComments %}
+<li id="items" >
+   
+   <p>{{ todoComment.Comments }}</p>
+   </li>
+    
+   
+{% endfor %}
+
+
+</ul>
+
+<form action="index.php?controller=todocomments&action=addNewComment&id={{todo.todoId}}" method="post" enctype="multipart/form-data">
+<input type="text" id="name" name="comment" placeholder="name" />
+<input class="add" type="submit" value="submit" />
+</form></li>
+
+
+
+</body>
+</html>

@@ -39,4 +39,14 @@ CREATE TABLE `todo` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-06-01 10:35:19
+
+
+DROP TABLE IF EXISTS `todoComments`;
+
+
+CREATE TABLE `todoComments` (
+  `todocommentsId` int(11) NOT NULL AUTO_INCREMENT,
+  `todoId` varchar(255) NOT NULL,
+  `comments` varchar(255) NOT NULL,
+  PRIMARY KEY (`todocommentsId`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
