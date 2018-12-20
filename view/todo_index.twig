@@ -9,34 +9,47 @@
 </head>
 
 <body>
-<h1>Do these things:</h1>
-<form action="index.php?controller=todo&action=addNewToDo" method="post" enctype="multipart/form-data">
-<input type="text" id="name" name="name" placeholder="name" />
-<input class="add" type="submit" value="submit" />
-</form></li>
+<h1>Things Todo</h1>
+  <!-- todo , add form for adding new todo-item -->
+    <form action="index.php?controller=todo&action=addNewToDo" method="post" enctype="multipart/form-data">
+    <input type="text" id="name" name="name" placeholder="Todo" />
+    <input class="add" type="submit" value="Add new" />
+    </form>
+
+
+<!-- Todo List -->
 <ul id="todo-list">
-{% for todo in todos %}
-<li id="items" >
-   {% if not todo.done  %}
-   <a  href="index.php?controller=todocomments&action=index&id={{todo.todoId}}">
-   {{ todo.name }}<a/>
-   <a href="index.php?controller=todo&action=markAsDone&id={{todo.todoId}}">[DONE]</a> 
-   {% else %}
-   <del>{{ todo.name }}</del>
-   {% endif %}
+    {% for todo in todos %}
+        <section id="main"> <!-- Section for each item in todo list -->
+                <li id="items" class="done">
+                    <div class="display">
 
-    <a class="destroy" href="index.php?controller=todo&action=delete&id={{todo.todoId}}">Remove</a>
-  
-   </li>
-    
-   
-{% endfor %}
+                        {% if not todo.done  %}
+                            <!-- Mark as done checkbox -->
+                            <a class="checkmark" href="index.php?controller=todo&action=markAsDone&id={{todo.todoId}}"></a> 
+                            
+                            <!-- Go to comments site by clicking on name-->
+                            <a style="margin-left:10px" href="index.php?controller=todocomments&action=index&id={{todo.todoId}}">
+                            {{ todo.name }}<a/>
+                            
+                            <!--Edit button -->
+                            <a class="edit" href="index.php?controller=todo&action=edit&id={{todo.todoId}}">edit</a> 
+                            
+                        {% else %}
+                            <del>{{ todo.name }}</del>
+                        {% endif %}
+                            <!-- Delete Button-->
+                            <a class="destroy" href="index.php?controller=todo&action=delete&id={{todo.todoId}}">Remove</a>
+                    </div>
+                </li>
+            
+        </section>
+    {% endfor %}
 
-   <!-- todo , add form for adding new todo-item -->
+ 
 
    <li>
-   
-
+   </li>
 </ul>
 
 

@@ -25,6 +25,22 @@ class TodoController {
 		return $template->render(array('todos' => $todos));
 	}
 
+	// Get the edit view
+	public function editAction() {
+		// Get all todos
+		$todo = new todo;
+		$todo = $todo->Get($this->get['id']);
+		// Filter by passing an argument as array(array('done', '=', '0')) to
+		// GetList. This would for example only select todos that are done.
+
+		// Get template
+		$template = $this->getTemplate('todo_edit');
+
+		// Render template
+		return $template->render(array('todo' => $todo));
+	}
+
+	//Mark to Do as Done
 	public function markAsDoneAction() {
 		$todo = new todo;
 		$todo = $todo->Get($this->get['id']);
@@ -52,6 +68,16 @@ class TodoController {
 
 		return $this->indexAction();
 		
+	}
+
+	//Edit Todo
+	public function modifyAction() {
+		$todo = new todo;
+		$todo = $todo->Get($this->get['id']);
+		$todo->name =$_POST['name'];
+		$todo->Save();
+
+		return $this->editAction();
 	}
 
 

@@ -12,10 +12,11 @@ class TodoCommentsController {
 	}
 
 	public function indexAction() {
-		// Get selected todos
+		// Get selected todo
 		$todo = new todo;
         $todo = $todo->Get($this->get['id']);
-        
+		
+		//Get all Comments
         $todoComments = new todoComments;
         $todoComments= $todoComments->GetByTodoId($this->get['id']);
 
@@ -26,17 +27,16 @@ class TodoCommentsController {
 		return $template->render(array('todo' => $todo,'todocomments'=>$todoComments));
 	}
 
-	/* TODO: add methods for newAction, deleteAction, modifyAction ... */
+	/* Comment: add methods for newAction, deleteAction, modifyAction ... */
 
-	//Add new ToDo
+	//Add new Comment
 	public function addNewCommentAction() {
 		$todoComments = new todoComments();
-		
 		$todoComments->SaveNew($_POST['comment'],$this->get['id']);
 		return $this->indexAction();
 	}
 
-	//Delete Todo
+	//Delete Comment
 	public function deleteAction() {
 		$todoComments = new todoComments;
 

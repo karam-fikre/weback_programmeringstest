@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head> 
+{% block stylesheets %}
+
+    <link href="./view/css/main.css" rel="stylesheet">
+{% endblock %}
+
+</head>
+
+<body>
+    <h1>Edit</h1>
+
+    <h2>{{todo.name}}</h2>
+
+        <form action="index.php?controller=todo&action=modify&id={{todo.todoId}}" method="post" enctype="multipart/form-data">
+        <input type="text" id="name" name="name" placeholder="name" />
+        <input class="add" type="submit" value="submit" />
+        <a class="add" href="index.php" > Cancel </a>
+        </form>
+
+
+</body>
+</html>

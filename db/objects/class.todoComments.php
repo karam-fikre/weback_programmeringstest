@@ -81,7 +81,7 @@ class todoComments extends POG_Base
 	}
 	
 
-	/*get the comments for the spesific ToDo */
+	//Get the comments for the spesific ToDo
 	function GetByTodoId($todoId)
 	{
 		$todocommentsList = Array();
@@ -100,6 +100,8 @@ class todoComments extends POG_Base
 		}
 		return $todocommentsList;
 	}
+
+	
 	/**
 	* Returns a sorted array of objects that match given conditions
 	* @param multidimensional array {("field", "comparator", "value"), ("field", "comparator", "value"), ...} 

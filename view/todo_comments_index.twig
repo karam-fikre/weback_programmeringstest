@@ -12,25 +12,30 @@
 
 <ul id="todo-list">
 <h1>  {{ todo.name }}</h1>
-{% for todoComment in todocomments %}
-<li id="items" >
-   
-   <p>{{ todoComment.comments }}</p>
+    <!-- Comments list -->
 
-   <a class="destroy" href="index.php?controller=todocomments&action=delete&id={{todo.todoId}}&deleteId={{todoComment.todocommentsId}}">Remove</a>
-  
-   </li>
+    <h2>Comments:</h2>
+    {% for todoComment in todocomments %}
+        <li id="items" >
+        
+        <p>{{ todoComment.comments }}</p>
+
+        <a class="destroy" href="index.php?controller=todocomments&action=delete&id={{todo.todoId}}&deleteId={{todoComment.todocommentsId}}">Remove</a>
+        
+        </li>
+        
     
-   
-{% endfor %}
+    {% endfor %}
 
 
 </ul>
 
+<!-- Add new Comment form-->
 <form action="index.php?controller=todocomments&action=addNewComment&id={{todo.todoId}}" method="post" enctype="multipart/form-data">
 <input type="text" id="name" name="comment" placeholder="Comment" />
 <input class="add" type="submit" value="Add" />
-</form></li>
+<a class="add" href="index.php" > Cancel </a>
+</form>
 
 
 
