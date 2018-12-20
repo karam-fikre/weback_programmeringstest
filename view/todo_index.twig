@@ -22,10 +22,10 @@
    {{ todo.name }}<a/>
    <a href="index.php?controller=todo&action=markAsDone&id={{todo.todoId}}">[DONE]</a> 
    {% else %}
-   <del>{{ todo.name }}
+   <del>{{ todo.name }}</del>
    {% endif %}
 
-    <a class="destroy" href="index.php?controller=todo&action=delete&id={{todo.todoId}}">[Delete]</a>
+    <a class="destroy" href="index.php?controller=todo&action=delete&id={{todo.todoId}}">Remove</a>
   
    </li>
     

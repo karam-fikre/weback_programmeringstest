@@ -12,10 +12,13 @@
 
 <ul id="todo-list">
 <h1>  {{ todo.name }}</h1>
-{% for todoComment in todoComments %}
+{% for todoComment in todocomments %}
 <li id="items" >
    
    <p>{{ todoComment.comments }}</p>
+
+   <a class="destroy" href="index.php?controller=todocomments&action=delete&id={{todo.todoId}}&deleteId={{todoComment.todocommentsId}}">Remove</a>
+  
    </li>
     
    

@@ -17,13 +17,13 @@ class TodoCommentsController {
         $todo = $todo->Get($this->get['id']);
         
         $todoComments = new todoComments;
-        $todoComments= $todoComments->GetList();
+        $todoComments= $todoComments->GetByTodoId($this->get['id']);
 
 		// Get template
 		$template = $this->getTemplate('todo_comments_index');
 
 		// Render template
-		return $template->render(array('todo' => $todo,'todoComments'=>$todoComments));
+		return $template->render(array('todo' => $todo,'todocomments'=>$todoComments));
 	}
 
 	/* TODO: add methods for newAction, deleteAction, modifyAction ... */
@@ -38,10 +38,11 @@ class TodoCommentsController {
 
 	//Delete Todo
 	public function deleteAction() {
-		$todo = new todo;
-		$todo = $todo->Get($this->get['id']);
-		$todo->done = 1;
-		$todo->Delete();
+		$todoComments = new todoComments;
+
+		$todoComments = $todoComments->Get($this->get['deleteId']);
+		
+		$todoComments->Delete();
 
 		return $this->indexAction();
 		

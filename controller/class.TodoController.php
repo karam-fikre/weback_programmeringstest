@@ -48,10 +48,9 @@ class TodoController {
 	public function deleteAction() {
 		$todo = new todo;
 		$todo = $todo->Get($this->get['id']);
-		$todo->done = 1;
 		$todo->Delete();
 
-		return $this->indexAction();$todo = new todo();
+		return $this->indexAction();
 		
 	}
 
