@@ -1,0 +1,205 @@
+Hej,
+
+tanken med denna övningen är att bedöma hur du kodar en enkel
+CRUD-app. Alltså kommer jag titta på följande saker i din kod för att
+bedöma den:
+
+ 1) korrekthet: att allting fungerar efter specifikation
+ 2) struktur: att koden är strukturerad på ett vettigt sätt
+ 3) effektivitet: att koden inte är suboptimal på något större vis
+ 4) säkerhet: undvika uppenbara säkerhetshål, typ SQL-injection
+
+* Specifikation
+
+Bygg ett TODO-system med kommentarer. Användare kan:
+
+0) Se lista med alla TODOs
+1) Lägga till nya TODO
+2) Ta bort gamla TOOD
+3) Ändra namnet på en TODO
+4) Markera en TODO som avklarad
+
+Utöver detta kan användare också för varje TODO:
+
+1) Lägga Till en kommentarer
+2) Läsa existerande kommentarer
+
+Systemet har alltså tre separata sidor: en sida där man kan se en
+lista med TODO, kryssa av TODOs, ta bort TODOs och lägga till
+TODOs. För varje TODO finns en sida för att redigera TODOns namn, och
+en annan sida för att läsa och lägga till kommentarer.
+
+I den här katalogen finner du en liten bas som du skall använda för
+att bygga klart systemet.
+
+** Struktur
+
+Projektet bör följa MVC-mönstret i så stor utsträckning som
+möjligt. Det innebär mer eller mindre att du har följande struktur:
+
+index.php -- Hanterar all requests, och vidarebefodrar dem till
+korrect controller.
+
+db/objects/class.[model].php -- modell för [model]
+
+controller/class.[model]Controller.php -- controller för [model]
+view/[model]_[action].twig -- view för [model] och [action]
+
+Exempel: för att visa alla todos sker följande:
+
+1) Användaren skickar en request till index.php, som urskiljer att det
+   handlar om controllern TODO, och action "index". index.php skapar en
+   instans av controllern class.TodoController.php och anropar metoden
+   indexAction på denna.
+
+2) metoden indexAction i TodoController hämtar listan med TODO mha av
+   modellen "todo". Den laddar även motsvarande template i filen
+   view/todo_template.twig. Den skickar listan med todos till Twig som
+   renderar templaten med rätt data, och returnar den resulterande
+   HTML-koden till index.php, som outputtar till användaren.
+
+** Databas
+
+Som databas använder du MySQL med POG.
+
+*** POG
+I WebAck använder vi en ful liten ORM som heter POG[1], därför är det
+lämpligt att du också använder POG för det här projektet. Jag har
+inkluderat alla filer som behövs för att komma igång med POG, jag har
+också lagt in en klass för tabellen "todo".
+
+Du kommer behöva modifiera den här klassen, och du kommer behöva lägga
+till en ny klass för tabellen som innehåller kommentarer för varje
+TODO.
+
+**** Modifiera existerande klass
+För att modifiera en existerande POG-klass gör man följande:
+
+1) Följ länken som du hittar i kommentaren längst upp i klass-filen,
+efter @link.
+
+2) Du kommer nu få upp ett formulär med två fält för varje kolumn i
+tabellen (namn, typ).
+
+3) Tryck på "add attribute" längst ned. Du får nu ett två nya
+fält. Fyll i det önskade namnet och typen. Utöver primitiva typer som
+INT/VARCHAR kan du också till exempel använda välja
+CHILD/SIBLING/PARENT för att modellera relationerna "1 - *", "* - *",
+"* - 1". Till exempel, todo har flera kommenterar som CHILD, och varje
+kommentar har en todo som PARENT.
+
+4) Tryck på submit: du får en ny klass som du skriver över den gamla
+versionen av klassen med.
+
+5) Längst upp i klassen finns tabellens motsvarande "CREATE
+TABLE". För att se till att tabellen i databasen motsvarar det du har
+i klassen, kan du köra en "DROP TABLE", och sedan detta "CREATE #
+TABLE".
+
+
+**** Lägga till existerande klass
+För att lägga till en ny POG-klass för man följande:
+
+1) Gå till http://www.phpobjectgenerator.com/
+2) Fyll i attribut på samma sätt som när du modifierar en existerande klass
+3) Tryck på submit: du får en ny klass som du skriver över den gamla
+versionen av klassen med.
+4) Spara den resulterande koden i filen "class.[tablename].php" i
+katalogen "db/objects/".
+5) Kör CREATE TABLE på samma sätt som när du modifierar en existerande klass.
+
+**** POG-api
+
+I app-skelettet som jag har gett dig finns exempel på hur POG-kan
+användas för att hämta ut modeller från en tabell och för att skapa
+nya modeller. Se även dokumentationen[3] för mer info.
+
+*** Schema
+
+I filen "db/schema.sql" hittar du systemets databas-schema. För att
+initialisera din databas, skapa en database med namnet "todo", en
+databas-användare med namnet "todo" och lösenord "todo". Denna
+användare skall ha full access till databasen "todo".
+
+För att skapa användare och databas, kan du köra följande:
+
+   mysql> create database todo;
+   Query OK, 1 row affected (0.00 sec)
+
+   mysql> create user 'todo'@'localhost' identified by 'todo';
+   Query OK, 0 rows affected (0.00 sec)
+
+   mysql> GRANT ALL PRIVILEGES ON todo.* TO 'todo'@'localhost';
+   Query OK, 0 rows affected (0.01 sec)
+
+För att importera structuren, kör följande:
+
+ mysql -u todo -p todo < db/schema.sql
+
+När du har gjort klart projektet, kör följande för att exportera din
+modifierade struktur:
+
+ mysqldump -d -u todo -p todo > db/schema.sql
+
+** Template
+
+I Weback använder vi inget speciellt templating-system: PHP, HTML och
+JavaScript är blandat i en härlig röra... Det är en ganska trist
+situation som jag skulle vilja ändra nån gång. Jag har inkluderat
+Twig[2] så du kan jobba med det. Du hittar ett exempel i koden
+class.TodoController.php som borde illustrera hur du använder Twig,
+annars är Twigs dokumentation bra.
+
+** Begränsningar
+
+Du behöver inte lägga till något system för användare: man behöver
+inte logga in eller skapa några användare för att redigera TODOs och
+lägga till kommentarer.
+
+Du behöver heller inte tänka på några speciella estetiska
+aspekter. Skriv gärna lite CSS, men det kvittar hur fult det blir :)
+
+** Tid
+
+Om du inte är klar efter börjar ta mer än 4-6 timmar, så bekymra dig
+inte om att göra klart utan rensa upp det du har och skicka det till
+mig. Jag är inte säker på om det är möjligt att göra klart allt i en
+rimlig tid, och det är ofta lätt hänt att man hakar upp sig på nån
+smågrej. Koncentrera dig på att göra varje punkt BRA istället för att
+göra många punkter halv-bra. Om du hakar upp dig på något som är
+oklart i dokumentationen eller koden, så är det mitt fel, så be om min
+hjälp.
+
+** Kommenterar, kodstil och språk
+
+Följ samma kodstil som jag gör, om det inte orsakar allt för mycket
+problem med din editor. Kommentera gärna om du skriver någon kod som
+är oklar, men det är oftast bättre att skriva kod som är
+självförklarande. Skriv all kod och kommentarer på engelska.
+
+** Javascript och Ajax
+
+Projektet innehåller inte någon speciellt Javascript eller Ajax,
+eftersom vi heller inte använder det särskilt mycket i WebAck. Om du
+är sugen så finns det inget som hindrar dig från att lägga till sådant
+för bonus-poäng, men det är heller inget krav.
+
+** Om du har några frågor eller behöver hjälp med något
+
+Hesitera för guds skull inte att ställa frågor om du undrar något:
+det finns inga dumma frågor etc. Du kan kontakta mig när du vill
+antingen via email.
+
+Om något är otydligt så är det antagligen mitt fel, så om du tvekar är
+det bara att fråga.
+
+** Inlämning
+
+När du är klar, zippa upp projektet och maila till mig, och skriv ner
+vad du har gjort och vad du inte har gjort.
+
+** Referenser
+
+[1] http://www.phpobjectgenerator.com/
+[2] http://twig.sensiolabs.org/
+[3] http://www.phpobjectgenerator.com/plog/tutorials
