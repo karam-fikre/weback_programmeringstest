@@ -15,7 +15,7 @@
 {% for todoComment in todoComments %}
 <li id="items" >
    
-   <p>{{ todoComment.Comments }}</p>
+   <p>{{ todoComment.comments }}</p>
    </li>
     
    
@@ -25,8 +25,8 @@
 </ul>
 
 <form action="index.php?controller=todocomments&action=addNewComment&id={{todo.todoId}}" method="post" enctype="multipart/form-data">
-<input type="text" id="name" name="comment" placeholder="name" />
-<input class="add" type="submit" value="submit" />
+<input type="text" id="name" name="comment" placeholder="Comment" />
+<input class="add" type="submit" value="Add" />
 </form></li>
 
 

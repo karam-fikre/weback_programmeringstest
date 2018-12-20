@@ -82,16 +82,20 @@ class todoComments extends POG_Base
 	
 	function GetByTodoId($todocommentsId)
 	{
+		$todocommentsList = Array();
 		$connection = Database::Connect();
 		$this->pog_query = "select * from `todocomments` where `todoId`='".intval($todocommentsId)."' LIMIT 1";
+		$thisObjectName = get_class($this);
 		$cursor = Database::Reader($this->pog_query, $connection);
 		while ($row = Database::Read($cursor))
 		{
-			$this->todocommentsId = $row['todocommentsId'];
-			$this->todoId = $this->Unescape($row['todoId']);
-			$this->comments = $this->Unescape($row['comments']);
+			$todocomments = new $thisObjectName();
+			$todocomments->todocommentsId = $row['todocommentsId'];
+			$todocomments->todoId = $this->Unescape($row['todoId']);
+			$todocomments->comments = $this->Unescape($row['comments']);
+			$todocommentsList[] = $todocomments;
 		}
-		return $this;
+		return $todocommentsList;
 	}
 	/**
 	* Returns a sorted array of objects that match given conditions

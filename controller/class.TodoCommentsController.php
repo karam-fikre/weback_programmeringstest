@@ -17,7 +17,7 @@ class TodoCommentsController {
         $todo = $todo->Get($this->get['id']);
         
         $todoComments = new todoComments;
-        $todoComments= $todoComments->GetByTodoId($this->get['id']);
+        $todoComments= $todoComments->GetList();
 
 		// Get template
 		$template = $this->getTemplate('todo_comments_index');
